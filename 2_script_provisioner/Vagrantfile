@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$script = <<SCRIPT
+$outString = "$(Get-Date) : LET THERE BE FILE I/O!"
+$outString | Out-File -FilePath c:\\vagrant-was-here-2.txt
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "a-mcf/Win2012R2-WMF5-min"
+
+  # runs the inline script below
+  config.vm.provision "shell" do |s|
+    s.inline = "Get-Date | Out-File -FilePath c:\\vagrant-was-here-1.txt"
+  end
+
+  # runs the inline script in the variable above
+  config.vm.provision "shell", inline: $script
+
+  # runs an external script
+  config.vm.provision "shell", path: "provision.ps1"
+
+  # runs an external script, but only when initially provisioned
+  # or when `vagrant provision` is called.
+  config.vm.provision "shell", run: "always", path: "provision_always.ps1"
+
+end
