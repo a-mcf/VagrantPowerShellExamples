@@ -1,0 +1,19 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$dsc_script = <<SCRIPT
+# dot-source the config
+. c:\\vagrant\\myConfig.ps1
+
+# generate the mof
+$configDir = Join-Path -Path $env:Temp -ChildPath mof
+MyConfig -OutputPath $configDir
+Start-DscConfiguration -Path $configDir -Force -Wait -Verbose
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "a-mcf/Win2012R2-WMF5-min"
+
+  # runs the inline script in the variable above
+  config.vm.provision "shell", inline: $dsc_script
+end
