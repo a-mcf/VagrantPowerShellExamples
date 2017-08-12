@@ -1,0 +1,22 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$dsc_script = <<SCRIPT
+# dot-source the config
+Start-DscConfiguration -Path c:\\vagrant\\mof -Force -Wait -Verbose
+SCRIPT
+
+$verify_script = <<SCRIPT
+Write-Host "Checking web server.."
+Invoke-Webrequest -UseBasicParsing -Uri http://localhost | Select-Object -ExpandProperty RawContent
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "a-mcf/Win2012R2-WMF5-min"
+
+  # generates and applies the DSC configuration using
+  # the script stored in $dsc_script
+  config.vm.provision "shell", inline: $dsc_script
+
+  config.vm.provision "shell", inline: $verify_script
+end
