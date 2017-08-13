@@ -11,3 +11,7 @@ What follows is a set of notes and examples for use in demonstrating some use ca
 ## gotchas
 - shared folder issues: VirtualBox uses an internal SMB server for the shared folder. You can't see what permissions are allowed, so some gymnastics may be required.
 - be sure to include the .vagrant files in your .gitignore.
+
+## tips
+
+use `vagrant --color` or `$env:VAGRANT_FORCE_COLOR` to enable colors on windows.
