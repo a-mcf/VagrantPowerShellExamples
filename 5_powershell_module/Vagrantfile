@@ -1,0 +1,44 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# replace this with your module name
+$powershell_module_name = "vagrantDemo"
+
+# trust the PSGallery, install Pester.
+$install_dependencies_script = <<SCRIPT
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force | Out-Null
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+Install-Module Pester -Force
+SCRIPT
+
+# create a symlink for the module so it's in $PSModulePath
+$symlink_module_script = <<SCRIPT
+$modulePath = ($env:PSModulePath -split ';')[0]
+ 
+if (-not (Test-Path $modulePath))
+{
+    Write-Host "creating $modulePath"
+    mkdir $modulePath | Out-Null
+}
+
+cd $modulePath
+
+if (-not (Test-Path $Args))
+{
+    Write-Host "creating symbolic link"      
+    cmd /c "mklink /D .\\$Args c:\\vagrant"
+}
+SCRIPT
+
+$invoke_pester_script = <<SCRIPT
+c:
+cd \\vagrant
+Invoke-Pester
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "a-mcf/Win2012R2-WMF5-min"
+  config.vm.provision "shell", inline: $install_dependencies_script
+  config.vm.provision "shell", inline: $symlink_module_script, args: $powershell_module_name
+  config.vm.provision "shell", inline: $invoke_pester_script
+end
