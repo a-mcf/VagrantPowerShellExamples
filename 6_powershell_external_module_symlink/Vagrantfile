@@ -1,0 +1,31 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# replace this with your module name
+# this must be manually dropped into
+# the vagrant folder on the host side.
+$powershell_module_name = "MyModule"
+
+# create a symlink for the module so it's in $PSModulePath
+$symlink_module_script = <<SCRIPT
+$modulePath = ($env:PSModulePath -split ';')[0]
+ 
+if (-not (Test-Path $modulePath))
+{
+    Write-Host "creating $modulePath"
+    mkdir $modulePath | Out-Null
+}
+
+cd $modulePath
+
+if (-not (Test-Path $Args))
+{
+    Write-Host "creating symbolic link"      
+    cmd /c "mklink /D .\\$Args c:\\vagrant\\$Args"
+}
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "a-mcf/Win2012R2-WMF5-min"
+  config.vm.provision "shell", inline: $symlink_module_script, args: $powershell_module_name
+end

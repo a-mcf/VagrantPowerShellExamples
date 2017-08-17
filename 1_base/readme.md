@@ -1,0 +1,15 @@
+## Vagrant basics
+- Create a new vagrant file `vagrant init a-mcf/Win2012R2-WMF5-min`
+- Where do images come from? [Packer](https://www.packer.io/intro/index.html).
+- Images can be hosted for free on [Vagrant Cloud]( https://vagrantcloud.com/) (formerly Atlas).
+- This demo uses an image built from Matt Wrock's WMF5 [box](https://github.com/mwrock/packer-templates)
+- Credentials are customarily `vagrant/vagrant`
+- Vagrant uses a shared folder mounted inside the guest at `c:\vagrant` or `/vagrant` to get files into the guest.
+- It uses WinRM or SSH for communication `vagrant powershell` or `vagrant ssh`
+- Basic commands:
+  - `vagrant up` - downloads (if required) and boots the box, running provisioners as required.
+  - `vagrant reload` - reboots the box.
+  - `vagrant halt` - shuts down the box
+  - `vagrant provision` - runs the provisioners in the Vagrantfile witout rebooting.
+  - `vagrant destroy` - destroys the box
+  - Many more: https://www.vagrantup.com/docs/cli/
