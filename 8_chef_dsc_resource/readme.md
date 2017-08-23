@@ -9,7 +9,7 @@ This is a nice scenario for many Windows shops as Chef has a far more complete e
 # Use
 run: `Vagrant Up`
 
-## How It Was Built:
+## How It Was Built
 ```
 mkdir cookbooks
 cd cookbooks
