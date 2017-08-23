@@ -4,7 +4,7 @@ What follows is a set of notes and examples for use in demonstrating some use ca
 
 The initial scenarios (1-6) were demonstrated to the Cincinati PowerShell Users group on 8/17/2017. Here is the [video](https://www.youtube.com/watch?v=ajKs2DGERF4&index=3&list=PLLiS8zCCPbcu84Iya5c-ThqERcsRoeOol)
 
-Anything beyond the iniital 6 scenarios were added after the fact.
+Scenarios 7+ are being added as I continue to experiment with different provisioners.
 
 ## What is Vagrant
 
